@@ -3,7 +3,7 @@
 [~~English README~~](README_en.md)
 
 ## 概要
-![](ChatOverlay.gif)  
+![](chatoverlay.gif)  
 discordのチャットをニコニコ風に**オーバーレイ表示**するやつ
 
 ## 使用方法
