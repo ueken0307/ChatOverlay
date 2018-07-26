@@ -1,0 +1,20 @@
+{
+  "name": "chatoverlay",
+  "version": "0.1.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "build": "electron .",
+    "packaging": "electron-packager . --platform=win32 --arch=x64 --electron-version=2.0.5 --overwrite",
+    "packaging32": "electron-packager . --platform=win32 --arch=ia32 --electron-version=2.0.5 --overwrite"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^2.0.5",
+    "electron-packager": "^12.1.0"
+  },
+  "dependencies": {
+    "discord.js": "^11.3.2"
+  }
+}

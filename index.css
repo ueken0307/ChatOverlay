@@ -1,0 +1,31 @@
+html {
+    height: 100%;
+    width: 100%
+}
+body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    /*color: rgba(255, 0, 0,1.0);*/
+    font-size: 2em;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#root{
+  /*
+  display: grid;
+  grid-template-columns:repeat(3,33%);
+  grid-template-rows: 20% 60% 20%;
+  */
+}
+
+.Message{
+  font-size: 3em;
+  position: absolute;
+  text-shadow: 2px 2px 4px #000000;
+  white-space:pre;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
