@@ -1,6 +1,5 @@
 # ChatOverlay(**beta**)
 ----
-[~~English README~~](README_en.md)
 
 ## 概要
 ![](chatoverlay.gif)  
