@@ -29,8 +29,6 @@ app.on('ready',()=>{
     }
   );
   
-  //マウス入力なし
-  mainWindow.setIgnoreMouseEvents(true);
   //画面最大化
   mainWindow.maximize();
   //常に最前面
@@ -65,6 +63,8 @@ app.on('ready',()=>{
     mainWindow.webContents.send('setting',settings.color);
     //ウィンドウの表示
     mainWindow.show();
+    //マウス入力なし
+    mainWindow.setIgnoreMouseEvents(true);
   });
   
   //discordクライアントの作成
