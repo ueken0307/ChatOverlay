@@ -4,6 +4,8 @@
 var electron = require('electron');
 var app = electron.app;
 var BrowserWindow = electron.BrowserWindow;
+var Menu = electron.Menu;
+var Tray = electron.Tray;
 //discord.js
 var Discord = require('discord.js');
 //File System
@@ -11,6 +13,7 @@ var fs = require('fs');
 
 var mainWindow = null;
 var client = null;
+var tray = null;
 
 var observeChannel;
 var token;
@@ -22,10 +25,10 @@ app.on('window-all-closed', ()=>{
 });
 
 app.on('ready',()=>{
-  //透過,フレームレス,サイズ変更不可,非表示
+  //透過,フレームレス,サイズ変更不可,非表示,タスクバーに表示しない
   mainWindow = new BrowserWindow(
     {
-      transparent: true, frame: false, resizable:false,show: false
+      transparent: true, frame: false, resizable:false,show: false,skipTaskbar:true
     }
   );
   
@@ -35,7 +38,24 @@ app.on('ready',()=>{
   mainWindow.setAlwaysOnTop(true);
 
   mainWindow.loadURL('file://' + __dirname + '/index.html');
-
+  
+  //全てのディスプレイ情報取得
+  let displays = electron.screen.getAllDisplays();
+  //ディスプレイ情報からメニュー用アイテム作成
+  let submenuDisplay=[];
+  for(let i=0;i<displays.length;i++){
+    submenuDisplay.push({label:('サイズ:'+ displays[i].bounds.width +','+ displays[i].bounds.height +
+    ' 位置:'+ displays[i].bounds.x +','+ displays[i].bounds.y),type:'radio',
+    click () {console.log(i);}});
+  }
+  //トレイに格納
+  tray = new Tray('./icon.ico');
+  let contextMenu = Menu.buildFromTemplate([
+    {label:'表示ディスプレイ',submenu:submenuDisplay},
+    {label:'終了',role:'quit'}
+  ]);
+  tray.setContextMenu(contextMenu);
+  
   mainWindow.on('closed',()=>{
     mainWindow = null;
   });
