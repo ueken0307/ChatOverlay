@@ -50,7 +50,7 @@ app.on('ready',()=>{
   setWindow(displays[0].bounds.x,displays[0].bounds.y,displays[0].bounds.width,displays[0].bounds.height);
   
   //トレイに格納
-  tray = new Tray('./icon.ico');
+  tray = new Tray(__dirname + '/icon.ico');
   let contextMenu = Menu.buildFromTemplate([
     {label:'表示ディスプレイ',submenu:submenuDisplay},
     {label:'終了',role:'quit'}
