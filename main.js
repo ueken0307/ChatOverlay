@@ -4,6 +4,8 @@
 var electron = require('electron');
 var app = electron.app;
 var BrowserWindow = electron.BrowserWindow;
+var Menu = electron.Menu;
+var Tray = electron.Tray;
 //discord.js
 var Discord = require('discord.js');
 //File System
@@ -11,6 +13,7 @@ var fs = require('fs');
 
 var mainWindow = null;
 var client = null;
+var tray = null;
 
 var observeChannel;
 var token;
@@ -22,20 +25,38 @@ app.on('window-all-closed', ()=>{
 });
 
 app.on('ready',()=>{
-  //透過,フレームレス,サイズ変更不可,非表示
+  //透過,フレームレス,サイズ変更不可,非表示,タスクバーに表示しない
   mainWindow = new BrowserWindow(
     {
-      transparent: true, frame: false, resizable:false,show: false
+      transparent: true, frame: false, resizable:false,show: false,skipTaskbar:true
     }
   );
   
-  //画面最大化
-  mainWindow.maximize();
   //常に最前面
   mainWindow.setAlwaysOnTop(true);
 
   mainWindow.loadURL('file://' + __dirname + '/index.html');
-
+  
+  //全てのディスプレイ情報取得
+  let displays = electron.screen.getAllDisplays();
+  //ディスプレイ情報からメニュー用アイテム作成
+  let submenuDisplay=[];
+  for(let i=0;i<displays.length;i++){
+    submenuDisplay.push({label:('サイズ:'+ displays[i].bounds.width +','+ displays[i].bounds.height +
+    ' 位置:'+ displays[i].bounds.x +','+ displays[i].bounds.y),type:'radio',
+    click () {setWindow(displays[i].bounds.x,displays[i].bounds.y,displays[i].bounds.width,displays[i].bounds.height);}});
+  }
+  //0番目のディスプレイにデフォルトで表示
+  setWindow(displays[0].bounds.x,displays[0].bounds.y,displays[0].bounds.width,displays[0].bounds.height);
+  
+  //トレイに格納
+  tray = new Tray('./icon.ico');
+  let contextMenu = Menu.buildFromTemplate([
+    {label:'表示ディスプレイ',submenu:submenuDisplay},
+    {label:'終了',role:'quit'}
+  ]);
+  tray.setContextMenu(contextMenu);
+  
   mainWindow.on('closed',()=>{
     mainWindow = null;
   });
@@ -81,5 +102,11 @@ app.on('ready',()=>{
   //ログイン
   client.login(token);
 });
+
+//表示ディスプレイ変更する関数
+var setWindow = (x,y,width,height)=>{
+  mainWindow.setSize(width,height);
+  mainWindow.setPosition(x,y);
+}
 
 //'#'+(parseInt(message.author.id, 10)%16581375).toString(16)
